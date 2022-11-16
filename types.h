@@ -1,7 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef enum {
+typedef enum command_type {
     INVALID_COMMAND,
     NEW_SCRATCHPAD_COMMAND,
     SHOW_SCRATCHPAD_COMMAND,
@@ -10,7 +10,7 @@ typedef enum {
     LIST_SCRATCHPADS_COMMAND
 } command_type_t;
 
-typedef enum {
+typedef enum status {
     OK_STATUS,
 
     // cmd line errors
@@ -21,7 +21,7 @@ typedef enum {
     FAILED_TO_READ_STASH_STATUS, // missing/empty/unable to read storage
 } status_t;
 
-typedef struct {
+typedef struct command_info {
     command_type_t command_type;
     const char* scratchpad_name;
 } command_info_t;

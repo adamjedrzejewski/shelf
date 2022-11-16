@@ -1,80 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
+
+
 #include "constants.h"
+#include "types.h"
   
 #define BUFFER_SIZE 1024
-static const char* STORAGE_PATH = "/tmp/shelf/";
-
-/*
-
-static const char* NEW_COMMAND_NAME         = "new";
-static const char* SHOW_COMMAND_NAME        = "show";
-static const char* REMOVE_COMMAND_NAME      = "remove";
-static const char* OPEN_EDITOR_COMMAND_NAME = "edit";
-static const char* LIST_COMMAND_NAME        = "list";
-
-
-static const char* NO_COMMAND_SPECIFIED_ERROR_MESSAGE             = "Please specify a command\n";
-static const char* MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE          = "Please specify scratchpad name\n";
-static const char* INVALID_COMMANDS_STATUS_NAME_ERROR_MESSAGE     = "Invalid command.\n";
-static const char* FAILED_TO_READ_STASH_STATUS_NAME_ERROR_MESSAGE = "Failed to list shelved items.\n";
-*/
-
-
-typedef enum {
-    INVALID_COMMAND,
-    NEW_SCRATCHPAD,
-    SHOW_SCRATCHPAD,
-    REMOVE_SCRATCHPAD,
-    OPEN_EDITOR_ON_SCRATCHPAD,
-    LIST_SCRATCHPADS
-} command_type_t;
-
-typedef enum {
-    OK,
-    NO_COMMAND_SPECIFIED,
-    INVALID_COMMAND_STATUS,
-    MISSING_SCRATCHPAD_NAME_STATUS,
-    FAILED_TO_READ_STASH_STATUS, // missing/empty/unable to read storage
-} status_t;
-
-typedef struct {
-    command_type_t command;
-    const char* scratchpad_name;
-} command_info_t;
-
-
-status_t create_new_scratchpad(const char* scratchpad_name) { return OK; }
-status_t show_scratchpad(const char* scratchpad_name) {return OK; }
-status_t remove_scratchpad(const char* scratchpad_name) {return OK; }
-status_t edit_scratchpad(const char* scratchpad_name) {return OK; }
-
-status_t list_scratchpads(void) {
-    DIR *d;
-    struct dirent *dir;
-
-    d = opendir(STORAGE_PATH);
-    if (!d) {
-        return FAILED_TO_READ_STASH_STATUS;
-    }
-
-	while ((dir = readdir(d)) != NULL) {
-		if (dir->d_type == DT_REG) {
-		printf("%s\n", dir->d_name);
-		}
-	}
-    closedir(d);
-
-    return OK;
-}
 
 
 void write_error(status_t error) {
     const char* error_message;
     switch (error) {
-        case NO_COMMAND_SPECIFIED:
+        case NO_COMMAND_SPECIFIED_STATUS:
             error_message = NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
             break;
         case MISSING_SCRATCHPAD_NAME_STATUS:
@@ -90,36 +28,37 @@ void write_error(status_t error) {
     }
 
     fputs(error_message, stderr);
+    fputs("\n", stderr);
 }
 
 status_t parse_command(int argc, const char** argv, command_info_t* command_info) {
-    command_info->command = INVALID_COMMAND;
+    command_info->command_type = INVALID_COMMAND;
     command_info->scratchpad_name = NULL;
 
     if (argc == 1) {
-        return NO_COMMAND_SPECIFIED;
+        return NO_COMMAND_SPECIFIED_STATUS;
     }
 
     const char* command = argv[1];
     if (strcmp(command, LIST_COMMAND_NAME) == 0) {
-        command_info->command = LIST_SCRATCHPADS;
-        return OK;
+        command_info->command_type = LIST_SCRATCHPADS_COMMAND;
+        return OK_STATUS;
     }
 
     if (strcmp(command, NEW_COMMAND_NAME) == 0) {
-        command_info->command = NEW_SCRATCHPAD;
+        command_info->command_type = NEW_SCRATCHPAD_COMMAND;
     }
     if (strcmp(command, SHOW_COMMAND_NAME) == 0) {
-        command_info->command = SHOW_SCRATCHPAD;
+        command_info->command_type = SHOW_SCRATCHPAD_COMMAND;
     }
     if (strcmp(command, REMOVE_COMMAND_NAME) == 0) {
-        command_info->command = REMOVE_SCRATCHPAD;
+        command_info->command_type = REMOVE_SCRATCHPAD_COMMAND;
     }
     if (strcmp(command, OPEN_EDITOR_COMMAND_NAME) == 0) {
-        command_info->command = OPEN_EDITOR_ON_SCRATCHPAD;
+        command_info->command_type = OPEN_EDITOR_ON_SCRATCHPAD_COMMAND;
     }
  
-    if (command_info->command == INVALID_COMMAND) {
+    if (command_info->command_type == INVALID_COMMAND) {
         return INVALID_COMMAND_STATUS;
     }
 
@@ -128,44 +67,44 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
     }
     command_info->scratchpad_name = argv[2];
 
-    return OK;
+    return OK_STATUS;
 }
 
 
 int main(int argc, const char** argv) {
     command_info_t command_info = {};
     status_t status = parse_command(argc, argv, &command_info);
-    if (status != OK) {
+    if (status != OK_STATUS) {
       write_error(status);
       exit(1);
     }
 
-    switch (command_info.command) {
-        case NEW_SCRATCHPAD:
+    switch (command_info.command_type) {
+        case NEW_SCRATCHPAD_COMMAND:
             status = create_new_scratchpad(command_info.scratchpad_name);
             break;
-        case SHOW_SCRATCHPAD:
+        case SHOW_SCRATCHPAD_COMMAND:
             status = show_scratchpad(command_info.scratchpad_name);
             break;
-        case REMOVE_SCRATCHPAD:
+        case REMOVE_SCRATCHPAD_COMMAND:
             status = remove_scratchpad(command_info.scratchpad_name);
             break;
-        case OPEN_EDITOR_ON_SCRATCHPAD:
+        case OPEN_EDITOR_ON_SCRATCHPAD_COMMAND:
             status = edit_scratchpad(command_info.scratchpad_name);
             break;
-        case LIST_SCRATCHPADS:
+        case LIST_SCRATCHPADS_COMMAND:
             status = list_scratchpads();
             break;
         default:
             break;
     }
 
-    if (status != OK) {
+    if (status != OK_STATUS) {
         write_error(status);
         exit(1);
     }
 
-    printf("%d\n", command_info.command);
+    printf("%d\n", command_info.command_type);
     return 0;
 
     char* buffer = malloc(sizeof(char) * BUFFER_SIZE);

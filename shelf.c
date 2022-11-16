@@ -1,14 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
+#include <stdlib.h>
 
 #include "commands.h"
 #include "constants.h"
 #include "types.h"
-  
-#define BUFFER_SIZE 1024
-#define len(array) sizeof (array) / sizeof *(array)
+#include "io.h"
+
+#define len(array) (sizeof (array) / sizeof *(array))
 
 const struct {
     const command_type_t command_type;
@@ -98,6 +97,9 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
 
 
 int main(int argc, const char** argv) {
+    continious_write_to_scratchpad("");
+
+    return 0;
     command_info_t command_info = {};
     status_t status = parse_command(argc, argv, &command_info);
     if (status != OK_STATUS) {
@@ -131,11 +133,6 @@ int main(int argc, const char** argv) {
     }
 
     printf("%d\n", command_info.command_type);
-    return 0;
-
-    char* buffer = malloc(sizeof(char) * BUFFER_SIZE);
-    while (fgets(buffer, BUFFER_SIZE, stdin) != NULL) {
-        fputs(buffer, stdout);
-    }
+    return 0;   
 }
 

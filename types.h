@@ -19,6 +19,7 @@ typedef enum status {
     MISSING_SCRATCHPAD_NAME_STATUS,
 
     FAILED_TO_READ_STASH_STATUS, // missing/empty/unable to read storage
+    FAILED_TO_CREATE_STASH,
 } status_t;
 
 typedef struct command_info {

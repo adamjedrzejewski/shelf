@@ -3,6 +3,7 @@
 #include <string.h>
 
 
+#include "commands.h"
 #include "constants.h"
 #include "types.h"
   

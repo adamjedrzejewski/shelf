@@ -1,5 +1,6 @@
 #include <dirent.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "commands.h"
 #include "types.h"
@@ -21,7 +22,7 @@ status_t list_scratchpads(void) {
 
 	while ((dir = readdir(d)) != NULL) {
 		if (dir->d_type == DT_REG) {
-		printf("%s\n", dir->d_name);
+		    puts(dir->d_name);
 		}
 	}
     closedir(d);

@@ -12,9 +12,12 @@ typedef enum {
 
 typedef enum {
     OK_STATUS,
-    NO_COMMAND_SPECIFIED_STATUS,
+
+    // cmd line errors
     INVALID_COMMAND_STATUS,
+    NO_COMMAND_SPECIFIED_STATUS,
     MISSING_SCRATCHPAD_NAME_STATUS,
+
     FAILED_TO_READ_STASH_STATUS, // missing/empty/unable to read storage
 } status_t;
 

@@ -1,8 +1,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "types.h"
-#include "constants.h"
+#include "status.h"
+#include "fs.h"
 
 status_t create_stash() {
     int err = mkdir(STORAGE_PATH, 0777);

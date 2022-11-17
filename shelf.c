@@ -4,12 +4,17 @@
 #include <stdbool.h>
 
 #include "commands.h"
-#include "constants.h"
-#include "types.h"
+#include "status.h"
 #include "io.h"
-#include "macros.h"
 
 
+#define foreach(item, array) \
+    for(int keep = 1, \
+            count = 0,\
+            size = sizeof (array) / sizeof *(array); \
+        keep && count != size; \
+        keep = !keep, count++) \
+      for(item = (array) + count; keep; keep = !keep)
 
 typedef const struct {
     const command_type_t command_type;
@@ -43,6 +48,7 @@ defined_command_t defined_commands[] = {
     },
 };
 
+// TODO move to io
 void write_error(status_t error) {
     const char* error_message;
     switch (error) {

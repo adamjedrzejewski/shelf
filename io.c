@@ -1,7 +1,6 @@
 #include <stdlib.h>
 
-#include "types.h"
-#include "constants.h"
+#include "status.h"
 #include "stdio.h"
 #include "fs.h"
 

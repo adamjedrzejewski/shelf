@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 #include "commands.h"
-#include "types.h"
-#include "constants.h"
+#include "status.h"
+#include "fs.h"
 #include "io.h"
 
 bool is_no_argument_command(command_type_t command) {

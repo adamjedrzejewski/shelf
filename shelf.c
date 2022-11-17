@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "commands.h"
 #include "constants.h"
@@ -16,6 +17,10 @@ typedef const struct {
 } defined_command_t;
 
 defined_command_t defined_commands[] = {
+    {
+        .command_type = HELP_COMMAND,
+        .command_name = &HELP_COMMAND_NAME
+    },
     {
         .command_type = LIST_SCRATCHPADS_COMMAND,
         .command_name = &LIST_COMMAND_NAME
@@ -80,15 +85,16 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
         }
     } 
 
-    // exit on command with no arguments
-    if (command_info->command_type == LIST_SCRATCHPADS_COMMAND) {
-        return OK_STATUS;
-    }
- 
     // invalid command
     if (command_info->command_type == INVALID_COMMAND) {
         return INVALID_COMMAND_STATUS;
     }
+
+    // exit on command with no arguments
+    if (is_no_argument_command(command_info->command_type)) {
+        return OK_STATUS;
+    }
+ 
 
     // commands with argument
     if (argc == 2) {
@@ -103,10 +109,6 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
 int main(int argc, const char** argv) {
     command_info_t command_info = {};
     status_t status = parse_command(argc, argv, &command_info);
-    if (status != OK_STATUS) {
-      write_error(status);
-      exit(1);
-    }
 
     switch (command_info.command_type) {
         case NEW_SCRATCHPAD_COMMAND:
@@ -124,6 +126,10 @@ int main(int argc, const char** argv) {
         case LIST_SCRATCHPADS_COMMAND:
             status = list_scratchpads();
             break;
+        case HELP_COMMAND:
+            status = show_help();
+
+        case INVALID_COMMAND:
         default:
             break;
     }

@@ -21,3 +21,7 @@ status_t continious_write_to_scratchpad(const char* name) {
 
     return OK_STATUS;
 }
+
+status_t write_help_message_to_stdout(void) {
+    return OK_STATUS;
+}

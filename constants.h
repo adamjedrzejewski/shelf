@@ -8,6 +8,7 @@ static const char* SHOW_COMMAND_NAME        = "show";
 static const char* REMOVE_COMMAND_NAME      = "remove";
 static const char* OPEN_EDITOR_COMMAND_NAME = "edit";
 static const char* LIST_COMMAND_NAME        = "list";
+static const char* HELP_COMMAND_NAME        = "help";
 
 static const char* NO_COMMAND_SPECIFIED_ERROR_MESSAGE             = "Please specify a command.";
 static const char* MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE          = "Please specify scratchpad name.";

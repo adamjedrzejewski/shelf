@@ -7,7 +7,8 @@ typedef enum command_type {
     SHOW_SCRATCHPAD_COMMAND,
     REMOVE_SCRATCHPAD_COMMAND,
     OPEN_EDITOR_ON_SCRATCHPAD_COMMAND,
-    LIST_SCRATCHPADS_COMMAND
+    LIST_SCRATCHPADS_COMMAND,
+    HELP_COMMAND
 } command_type_t;
 
 typedef enum status {

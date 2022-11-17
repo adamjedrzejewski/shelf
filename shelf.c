@@ -6,13 +6,16 @@
 #include "constants.h"
 #include "types.h"
 #include "io.h"
+#include "macros.h"
 
-#define len(array) (sizeof (array) / sizeof *(array))
 
-const struct {
+
+typedef const struct {
     const command_type_t command_type;
     const char**         command_name;
-} defined_commands_with_argument[] = {
+} defined_command_t;
+
+defined_command_t defined_commands[] = {
     {
         .command_type = LIST_SCRATCHPADS_COMMAND,
         .command_name = &LIST_COMMAND_NAME
@@ -67,14 +70,15 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
 
     // match command
     const char* command = argv[1];
-    for (int i = 0, size = len(defined_commands_with_argument); i < size; ++i) {
-        const char* defined_command_name = *defined_commands_with_argument[i].command_name;
+    foreach (defined_command_t* defined_command, defined_commands) {
+        const char* defined_command_name = *defined_command->command_name;
+        command_type_t command_type = defined_command->command_type;
 
         if (strcmp(command, defined_command_name) == 0) {
-            command_info->command_type = defined_commands_with_argument[i].command_type;
+            command_info->command_type = command_type;
             break;
         }
-    }
+    } 
 
     // exit on command with no arguments
     if (command_info->command_type == LIST_SCRATCHPADS_COMMAND) {
@@ -97,9 +101,6 @@ status_t parse_command(int argc, const char** argv, command_info_t* command_info
 
 
 int main(int argc, const char** argv) {
-    continious_write_to_scratchpad("");
-
-    return 0;
     command_info_t command_info = {};
     status_t status = parse_command(argc, argv, &command_info);
     if (status != OK_STATUS) {

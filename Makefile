@@ -5,13 +5,13 @@ shelf.o:
 	cc -c shelf.c constants.h types.h commands.h
 
 commands.o:
-	cc -c commands.c constants.h types.h
+	cc -c commands.c
 
 fs.o:
-	cc -c fs.c types.h constants.h
+	cc -c fs.c
 
 io.o:
-	cc -c io.c types.h constants.h
+	cc -c io.c
 
 clean:
 	rm -f shelf *.o *.h.gch

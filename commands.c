@@ -9,11 +9,23 @@
 
 bool is_no_argument_command(command_type_t command) {
     switch (command) {
-        case LIST_SCRATCHPADS_COMMAND:
-        case HELP_COMMAND:
-            return true;
-        default:
-            return false;
+    case LIST_SCRATCHPADS_COMMAND:
+    case HELP_COMMAND:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool is_one_argument_command(command_type_t command) {
+    switch (command) {
+    case NEW_SCRATCHPAD_COMMAND:
+    case SHOW_SCRATCHPAD_COMMAND:
+    case REMOVE_SCRATCHPAD_COMMAND:
+    case OPEN_EDITOR_ON_SCRATCHPAD_COMMAND:
+        return true;
+    default:
+        return false;
     }
 }
 

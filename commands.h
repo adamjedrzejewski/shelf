@@ -28,6 +28,7 @@ typedef struct command_info {
 } command_info_t;
 
 bool is_no_argument_command(command_type_t command);
+bool is_one_argument_command(command_type_t command);
 
 status_t create_new_scratchpad(const char* scratchpad_name);
 status_t show_scratchpad(const char* scratchpad_name);

@@ -1,7 +1,0 @@
-{
-    "files.exclude": {
-        "*.o": true,
-        "*.h.gch": true,
-        "shelf": true
-    }
-}

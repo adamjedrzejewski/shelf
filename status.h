@@ -31,6 +31,6 @@ static const char *ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE =
 static const char *ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE =
     "Scratchpad doesn't exist.";
 static const char *ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE =
-  "Failed to remove scratchpad.";
+    "Failed to remove scratchpad.";
 
 #endif // STATUS_H

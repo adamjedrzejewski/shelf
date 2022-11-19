@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "commands.h"
+#include "cmd.h"
 #include "io.h"
 #include "status.h"
 

@@ -1,7 +1,7 @@
 #include <dirent.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 
 #include "status.h"
 #include "stdio.h"
@@ -81,7 +81,7 @@ status_t io_remove_file(const char *filename) {
   if (status != ST_OK) {
     return status;
   }
-  
+
   if (!_file_exists(path)) {
     return ST_SCRATCHPAD_DOESNT_EXIST;
   }
@@ -89,7 +89,7 @@ status_t io_remove_file(const char *filename) {
   if (remove(path) != 0) {
     return ST_FAILED_TO_REMOVE_SCRATCHPAD;
   }
-  
+
   return ST_OK;
 }
 

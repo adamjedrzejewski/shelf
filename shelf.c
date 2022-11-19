@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "commands.h"
+#include "cmd.h"
 #include "io.h"
 #include "status.h"
 

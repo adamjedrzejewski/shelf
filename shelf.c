@@ -81,7 +81,7 @@ status_t parse_command(int argc, const char **argv,
   }
 
   // exit on command with no arguments
-  if (cmd_is_zero_argument_command(command_info->command_type)) {
+  if (cmd_is_0_arg(command_info->command_type)) {
     return ST_OK;
   }
 
@@ -105,22 +105,22 @@ int main(int argc, const char **argv) {
 
   switch (command_info.command_type) {
   case CMD_NEW:
-    status = cmd_create_new_scratchpad(command_info.scratchpad_name);
+    status = cmd_new(command_info.scratchpad_name);
     break;
   case CMD_SHOW:
-    status = cmd_show_scratchpad(command_info.scratchpad_name);
+    status = cmd_show(command_info.scratchpad_name);
     break;
   case CMD_REMOVE:
-    status = cmd_remove_scratchpad(command_info.scratchpad_name);
+    status = cmd_remove(command_info.scratchpad_name);
     break;
   case CMD_EDIT:
-    status = cmd_edit_scratchpad(command_info.scratchpad_name);
+    status = cmd_edit(command_info.scratchpad_name);
     break;
   case CMD_LIST:
-    status = cmd_list_scratchpads();
+    status = cmd_list();
     break;
   case CMD_HELP:
-    status = cmd_show_help();
+    status = cmd_help();
 
   case CMD_INVALID:
   default:

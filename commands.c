@@ -6,7 +6,7 @@
 #include "io.h"
 #include "status.h"
 
-bool cmd_is_zero_argument_command(command_type_t command) {
+bool cmd_is_0_arg(command_type_t command) {
   switch (command) {
   case CMD_LIST:
   case CMD_HELP:
@@ -16,7 +16,7 @@ bool cmd_is_zero_argument_command(command_type_t command) {
   }
 }
 
-bool cmd_is_one_argument_command(command_type_t command) {
+bool cmd_is_1_arg(command_type_t command) {
   switch (command) {
   case CMD_NEW:
   case CMD_SHOW:
@@ -28,13 +28,13 @@ bool cmd_is_one_argument_command(command_type_t command) {
   }
 }
 
-status_t cmd_create_new_scratchpad(const char *scratchpad_name) {
+status_t cmd_new(const char *scratchpad_name) {
   return ST_OK;
 }
-status_t cmd_show_scratchpad(const char *scratchpad_name) { return ST_OK; }
-status_t cmd_remove_scratchpad(const char *scratchpad_name) { return ST_OK; }
-status_t cmd_edit_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_show(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_remove(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_edit(const char *scratchpad_name) { return ST_OK; }
 
-status_t cmd_list_scratchpads(void) { return ST_OK; }
+status_t cmd_list(void) { return ST_OK; }
 
-status_t cmd_show_help(void) { return write_help_message_to_stdout(); }
+status_t cmd_help(void) { return write_help_message_to_stdout(); }

@@ -4,7 +4,7 @@
 #include "status.h"
 
 status_t create_stash();
-status_t cmd_remove_scratchpad_file(const char *name);
+status_t cmd_remove_file(const char *name);
 status_t continious_write_to_scratchpad(const char *name);
 status_t write_help_message_to_stdout(void);
 

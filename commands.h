@@ -27,14 +27,14 @@ typedef struct command_info {
   const char *scratchpad_name;
 } command_info_t;
 
-bool cmd_is_zero_argument_command(command_type_t command);
-bool cmd_is_one_argument_command(command_type_t command);
+bool cmd_is_0_arg(command_type_t command);
+bool cmd_is_1_arg(command_type_t command);
 
-status_t cmd_create_new_scratchpad(const char *scratchpad_name);
-status_t cmd_show_scratchpad(const char *scratchpad_name);
-status_t cmd_remove_scratchpad(const char *scratchpad_name);
-status_t cmd_edit_scratchpad(const char *scratchpad_name);
-status_t cmd_list_scratchpads(void);
-status_t cmd_show_help(void);
+status_t cmd_new(const char *scratchpad_name);
+status_t cmd_show(const char *scratchpad_name);
+status_t cmd_remove(const char *scratchpad_name);
+status_t cmd_edit(const char *scratchpad_name);
+status_t cmd_list(void);
+status_t cmd_help(void);
 
 #endif // COMMANDS_H

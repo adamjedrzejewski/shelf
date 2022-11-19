@@ -31,7 +31,7 @@ status_t create_stash() {
   return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
-status_t cmd_remove_scratchpad_file(const char *name) { return ST_OK; }
+status_t cmd_remove_file(const char *name) { return ST_OK; }
 
 status_t list_scratchpad_files() {
   DIR *d;

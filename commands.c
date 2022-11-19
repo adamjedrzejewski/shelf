@@ -29,12 +29,12 @@ bool is_one_argument_command(command_type_t command) {
 }
 
 status_t create_new_scratchpad(const char *scratchpad_name) {
-  return OK_STATUS;
+  return ST_OK;
 }
-status_t show_scratchpad(const char *scratchpad_name) { return OK_STATUS; }
-status_t remove_scratchpad(const char *scratchpad_name) { return OK_STATUS; }
-status_t edit_scratchpad(const char *scratchpad_name) { return OK_STATUS; }
+status_t show_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t remove_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t edit_scratchpad(const char *scratchpad_name) { return ST_OK; }
 
-status_t list_scratchpads(void) { return OK_STATUS; }
+status_t list_scratchpads(void) { return ST_OK; }
 
 status_t show_help(void) { return write_help_message_to_stdout(); }

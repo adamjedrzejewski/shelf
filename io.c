@@ -20,18 +20,18 @@ status_t continious_write_to_scratchpad(const char *name) {
 
   fclose(file);
 
-  return OK_STATUS;
+  return ST_OK;
 }
 
-status_t write_help_message_to_stdout(void) { return OK_STATUS; }
+status_t write_help_message_to_stdout(void) { return ST_OK; }
 
 status_t create_stash() {
   int err = mkdir(STORAGE_PATH, 0777);
 
-  return err == 0 ? OK_STATUS : FAILED_TO_CREATE_STASH;
+  return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
-status_t remove_scratchpad_file(const char *name) { return OK_STATUS; }
+status_t remove_scratchpad_file(const char *name) { return ST_OK; }
 
 status_t list_scratchpad_files() {
   DIR *d;
@@ -39,7 +39,7 @@ status_t list_scratchpad_files() {
 
   d = opendir(STORAGE_PATH);
   if (!d) {
-    return FAILED_TO_READ_STASH_STATUS;
+    return ST_FAILED_TO_READ_STASH;
   }
 
   while ((dir = readdir(d)) != NULL) {
@@ -49,5 +49,5 @@ status_t list_scratchpad_files() {
   }
   closedir(d);
 
-  return OK_STATUS;
+  return ST_OK;
 }

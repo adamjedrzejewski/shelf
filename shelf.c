@@ -34,17 +34,17 @@ defined_command_t defined_commands[] = {
 void write_error(status_t error) {
   const char *error_message;
   switch (error) {
-  case NO_COMMAND_SPECIFIED_STATUS:
-    error_message = NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
+  case ST_NO_COMMAND_SPECIFIED:
+    error_message = ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
     break;
-  case MISSING_SCRATCHPAD_NAME_STATUS:
-    error_message = MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
+  case ST_MISSING_SCRATCHPAD_NAME:
+    error_message = ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
     break;
-  case INVALID_COMMAND_STATUS:
-    error_message = INVALID_COMMANDS_STATUS_NAME_ERROR_MESSAGE;
+  case ST_INVALID_COMMAND:
+    error_message = ST_INVALID_COMMANDS_STATUS_NAME_ERROR_MESSAGE;
     break;
-  case FAILED_TO_READ_STASH_STATUS:
-    error_message = FAILED_TO_READ_STASH_STATUS_NAME_ERROR_MESSAGE;
+  case ST_FAILED_TO_READ_STASH:
+    error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
     break;
   default:
     return;
@@ -60,7 +60,7 @@ status_t parse_command(int argc, const char **argv,
   command_info->scratchpad_name = NULL;
 
   if (argc == 1) {
-    return NO_COMMAND_SPECIFIED_STATUS;
+    return ST_NO_COMMAND_SPECIFIED;
   }
 
   // match command
@@ -77,21 +77,22 @@ status_t parse_command(int argc, const char **argv,
 
   // invalid command
   if (command_info->command_type == INVALID_COMMAND) {
-    return INVALID_COMMAND_STATUS;
+    return ST_INVALID_COMMAND;
   }
 
   // exit on command with no arguments
   if (is_no_argument_command(command_info->command_type)) {
-    return OK_STATUS;
+    return ST_OK;
   }
 
   // commands with argument
   if (argc == 2) {
-    return MISSING_SCRATCHPAD_NAME_STATUS;
+    return ST_MISSING_SCRATCHPAD_NAME;
   }
+  printf("scratch that");
   command_info->scratchpad_name = argv[2];
 
-  return OK_STATUS;
+  return ST_OK;
 }
 
 int main(int argc, const char **argv) {
@@ -122,7 +123,7 @@ int main(int argc, const char **argv) {
     break;
   }
 
-  if (status != OK_STATUS) {
+  if (status != ST_OK) {
     write_error(status);
     exit(1);
   }

@@ -6,35 +6,35 @@
 #include "io.h"
 #include "status.h"
 
-bool is_no_argument_command(command_type_t command) {
+bool cmd_is_zero_argument_command(command_type_t command) {
   switch (command) {
-  case LIST_SCRATCHPADS_COMMAND:
-  case HELP_COMMAND:
+  case CMD_LIST:
+  case CMD_HELP:
     return true;
   default:
     return false;
   }
 }
 
-bool is_one_argument_command(command_type_t command) {
+bool cmd_is_one_argument_command(command_type_t command) {
   switch (command) {
-  case NEW_SCRATCHPAD_COMMAND:
-  case SHOW_SCRATCHPAD_COMMAND:
-  case REMOVE_SCRATCHPAD_COMMAND:
-  case OPEN_EDITOR_ON_SCRATCHPAD_COMMAND:
+  case CMD_NEW:
+  case CMD_SHOW:
+  case CMD_REMOVE:
+  case CMD_EDIT:
     return true;
   default:
     return false;
   }
 }
 
-status_t create_new_scratchpad(const char *scratchpad_name) {
+status_t cmd_create_new_scratchpad(const char *scratchpad_name) {
   return ST_OK;
 }
-status_t show_scratchpad(const char *scratchpad_name) { return ST_OK; }
-status_t remove_scratchpad(const char *scratchpad_name) { return ST_OK; }
-status_t edit_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_show_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_remove_scratchpad(const char *scratchpad_name) { return ST_OK; }
+status_t cmd_edit_scratchpad(const char *scratchpad_name) { return ST_OK; }
 
-status_t list_scratchpads(void) { return ST_OK; }
+status_t cmd_list_scratchpads(void) { return ST_OK; }
 
-status_t show_help(void) { return write_help_message_to_stdout(); }
+status_t cmd_show_help(void) { return write_help_message_to_stdout(); }

@@ -18,16 +18,16 @@ typedef const struct {
 } defined_command_t;
 
 defined_command_t defined_commands[] = {
-    {.command_type = HELP_COMMAND, .command_name = &HELP_COMMAND_NAME},
-    {.command_type = LIST_SCRATCHPADS_COMMAND,
-     .command_name = &LIST_COMMAND_NAME},
-    {.command_type = NEW_SCRATCHPAD_COMMAND, .command_name = &NEW_COMMAND_NAME},
-    {.command_type = SHOW_SCRATCHPAD_COMMAND,
-     .command_name = &SHOW_COMMAND_NAME},
-    {.command_type = REMOVE_SCRATCHPAD_COMMAND,
-     .command_name = &REMOVE_COMMAND_NAME},
-    {.command_type = OPEN_EDITOR_ON_SCRATCHPAD_COMMAND,
-     .command_name = &OPEN_EDITOR_COMMAND_NAME},
+    {.command_type = CMD_HELP, .command_name = &CMD_HELP_NAME},
+    {.command_type = CMD_LIST,
+     .command_name = &CMD_LIST_NAME},
+    {.command_type = CMD_NEW, .command_name = &CMD_NEW_NAME},
+    {.command_type = CMD_SHOW,
+     .command_name = &CMD_SHOW_NAME},
+    {.command_type = CMD_REMOVE,
+     .command_name = &CMD_REMOVE_NAME},
+    {.command_type = CMD_EDIT,
+     .command_name = &CMD_EDIT_NAME},
 };
 
 // TODO move to io
@@ -40,8 +40,8 @@ void write_error(status_t error) {
   case ST_MISSING_SCRATCHPAD_NAME:
     error_message = ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
     break;
-  case ST_INVALID_COMMAND:
-    error_message = ST_INVALID_COMMANDS_STATUS_NAME_ERROR_MESSAGE;
+  case ST_CMD_INVALID:
+    error_message = ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE;
     break;
   case ST_FAILED_TO_READ_STASH:
     error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
@@ -56,7 +56,7 @@ void write_error(status_t error) {
 
 status_t parse_command(int argc, const char **argv,
                        command_info_t *command_info) {
-  command_info->command_type = INVALID_COMMAND;
+  command_info->command_type = CMD_INVALID;
   command_info->scratchpad_name = NULL;
 
   if (argc == 1) {
@@ -76,12 +76,12 @@ status_t parse_command(int argc, const char **argv,
   }
 
   // invalid command
-  if (command_info->command_type == INVALID_COMMAND) {
-    return ST_INVALID_COMMAND;
+  if (command_info->command_type == CMD_INVALID) {
+    return ST_CMD_INVALID;
   }
 
   // exit on command with no arguments
-  if (is_no_argument_command(command_info->command_type)) {
+  if (cmd_is_zero_argument_command(command_info->command_type)) {
     return ST_OK;
   }
 
@@ -100,25 +100,25 @@ int main(int argc, const char **argv) {
   status_t status = parse_command(argc, argv, &command_info);
 
   switch (command_info.command_type) {
-  case NEW_SCRATCHPAD_COMMAND:
-    status = create_new_scratchpad(command_info.scratchpad_name);
+  case CMD_NEW:
+    status = cmd_create_new_scratchpad(command_info.scratchpad_name);
     break;
-  case SHOW_SCRATCHPAD_COMMAND:
-    status = show_scratchpad(command_info.scratchpad_name);
+  case CMD_SHOW:
+    status = cmd_show_scratchpad(command_info.scratchpad_name);
     break;
-  case REMOVE_SCRATCHPAD_COMMAND:
-    status = remove_scratchpad(command_info.scratchpad_name);
+  case CMD_REMOVE:
+    status = cmd_remove_scratchpad(command_info.scratchpad_name);
     break;
-  case OPEN_EDITOR_ON_SCRATCHPAD_COMMAND:
-    status = edit_scratchpad(command_info.scratchpad_name);
+  case CMD_EDIT:
+    status = cmd_edit_scratchpad(command_info.scratchpad_name);
     break;
-  case LIST_SCRATCHPADS_COMMAND:
-    status = list_scratchpads();
+  case CMD_LIST:
+    status = cmd_list_scratchpads();
     break;
-  case HELP_COMMAND:
-    status = show_help();
+  case CMD_HELP:
+    status = cmd_show_help();
 
-  case INVALID_COMMAND:
+  case CMD_INVALID:
   default:
     break;
   }

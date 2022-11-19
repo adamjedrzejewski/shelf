@@ -23,5 +23,7 @@ static const char *ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE =
     "Invalid command.";
 static const char *ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE =
     "Failed to list shelved items.";
+static const char *ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE =
+    "Failed to create stash.";
 
 #endif // STATUS_H

@@ -9,25 +9,55 @@
 
 static const char *STORAGE_PATH = "/tmp/shelf/";
 
-status_t io_write_from_stdin_to_file(const char *name) {
-  puts("new");
-  /*
-  FILE *file;
-  file = fopen("test.o", "w");
+static status_t _create_scratchpad_path(const char *filename, char *buffer) {
+  // TODO: handle error
+  snprintf(buffer, BUFFER_SIZE, "%s%s", STORAGE_PATH, filename);
 
+  return ST_OK;
+}
+
+status_t io_write_from_stdin_to_file(const char *filename) {
+  FILE *file;
+  status_t status;
+  char path[BUFFER_SIZE] = {};
   char buffer[BUFFER_SIZE] = {};
+
+  status = _create_scratchpad_path(filename, path);
+  if (status != ST_OK) {
+    return status;
+  }
+
+  // TODO: handle error
+  file = fopen(path, "w");
+
   while (fgets(buffer, BUFFER_SIZE, stdin) != NULL) {
     fputs(buffer, file);
   }
 
   fclose(file);
-  */
 
   return ST_OK;
 }
 
 status_t io_write_from_file_to_stdout(const char *filename) {
-  puts("show");
+  FILE *file;
+  status_t status;
+  char path[BUFFER_SIZE] = {};
+  char buffer[BUFFER_SIZE] = {};
+
+  status = _create_scratchpad_path(filename, path);
+  if (status != ST_OK) {
+    return status;
+  }
+
+  // TODO: handle error
+  file = fopen(path, "r");
+  while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+    fputs(buffer, stdout);
+  }
+
+  fclose(file);
+
   return ST_OK;
 }
 
@@ -53,6 +83,9 @@ void io_write_error(status_t error) {
   case ST_FAILED_TO_READ_STASH:
     error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
     break;
+  case ST_FAILED_TO_CREATE_STASH:
+    error_message = ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE;
+    break;
   default:
     return;
   }
@@ -62,13 +95,19 @@ void io_write_error(status_t error) {
 }
 
 status_t io_create_stash_if_nonexistent(void) {
+  struct stat st = {};
+
+  if (stat(STORAGE_PATH, &st) == 0) {
+    return ST_OK;
+  }
+
   int err = mkdir(STORAGE_PATH, 0777);
 
   return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
 status_t io_list_files_in_stash(void) {
-  /*
+  // TODO: handle errors
   DIR *d;
   struct dirent *dir;
 
@@ -83,8 +122,6 @@ status_t io_list_files_in_stash(void) {
     }
   }
   closedir(d);
-  */
-  puts("list");
 
   return ST_OK;
 }

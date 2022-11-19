@@ -98,11 +98,13 @@ int main(int argc, const char **argv) {
     break;
   }
 
+  // printf("%d\n", status);
+
   if (status != ST_OK) {
     io_write_error(status);
     exit(1);
   }
 
-  printf("%d\n", command_info.command_type);
+  // printf("%d\n", command_info.command_type);
   return 0;
 }

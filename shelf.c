@@ -26,30 +26,6 @@ defined_command_t defined_commands[] = {
     {.command_type = CMD_EDIT, .command_name = &CMD_EDIT_NAME},
 };
 
-// TODO move to io
-void write_error(status_t error) {
-  const char *error_message;
-  switch (error) {
-  case ST_NO_COMMAND_SPECIFIED:
-    error_message = ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
-    break;
-  case ST_MISSING_SCRATCHPAD_NAME:
-    error_message = ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
-    break;
-  case ST_CMD_INVALID:
-    error_message = ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE;
-    break;
-  case ST_FAILED_TO_READ_STASH:
-    error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
-    break;
-  default:
-    return;
-  }
-
-  fputs(error_message, stderr);
-  fputs("\n", stderr);
-}
-
 status_t parse_command(int argc, const char **argv,
                        command_info_t *command_info) {
   command_info->command_type = CMD_INVALID;
@@ -95,7 +71,7 @@ int main(int argc, const char **argv) {
   command_info_t command_info = {};
   status_t status = parse_command(argc, argv, &command_info);
   if (status != ST_OK) {
-    write_error(status);
+    io_write_error(status);
     exit(1);
   }
 
@@ -124,7 +100,7 @@ int main(int argc, const char **argv) {
   }
 
   if (status != ST_OK) {
-    write_error(status);
+    io_write_error(status);
     exit(1);
   }
 

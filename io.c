@@ -1,6 +1,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 #include "status.h"
 #include "stdio.h"
@@ -14,6 +15,13 @@ static status_t _create_scratchpad_path(const char *filename, char *buffer) {
   snprintf(buffer, BUFFER_SIZE, "%s%s", STORAGE_PATH, filename);
 
   return ST_OK;
+}
+
+static bool _file_exists(const char *path) {
+  struct stat st;
+
+  // TODO: handle error
+  return stat(path, &st) == 0;
 }
 
 status_t io_write_from_stdin_to_file(const char *filename) {
@@ -49,6 +57,9 @@ status_t io_write_from_file_to_stdout(const char *filename) {
   if (status != ST_OK) {
     return status;
   }
+  if (!_file_exists(path)) {
+    return ST_SCRATCHPAD_DOESNT_EXIST;
+  }
 
   // TODO: handle error
   file = fopen(path, "r");
@@ -62,7 +73,23 @@ status_t io_write_from_file_to_stdout(const char *filename) {
 }
 
 status_t io_remove_file(const char *filename) {
-  puts("show");
+  FILE *file;
+  status_t status;
+  char path[BUFFER_SIZE] = {};
+
+  status = _create_scratchpad_path(filename, path);
+  if (status != ST_OK) {
+    return status;
+  }
+  
+  if (!_file_exists(path)) {
+    return ST_SCRATCHPAD_DOESNT_EXIST;
+  }
+
+  if (remove(path) != 0) {
+    return ST_FAILED_TO_REMOVE_SCRATCHPAD;
+  }
+  
   return ST_OK;
 }
 
@@ -70,6 +97,7 @@ void io_write_help_message(void) { puts("help"); }
 
 void io_write_error(status_t error) {
   const char *error_message;
+
   switch (error) {
   case ST_NO_COMMAND_SPECIFIED:
     error_message = ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
@@ -85,6 +113,12 @@ void io_write_error(status_t error) {
     break;
   case ST_FAILED_TO_CREATE_STASH:
     error_message = ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE;
+    break;
+  case ST_SCRATCHPAD_DOESNT_EXIST:
+    error_message = ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE;
+    break;
+  case ST_FAILED_TO_REMOVE_SCRATCHPAD:
+    error_message = ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE;
     break;
   default:
     return;

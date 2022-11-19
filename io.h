@@ -4,7 +4,6 @@
 #include "status.h"
 
 status_t io_create_stash_if_nonexistent(void);
-status_t io_remove_file(const char *name);
 status_t io_write_from_stdin_to_file(const char *filename);
 status_t io_write_from_file_to_stdout(const char *filename);
 status_t io_remove_file(const char *filename);

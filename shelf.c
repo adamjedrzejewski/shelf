@@ -98,6 +98,10 @@ status_t parse_command(int argc, const char **argv,
 int main(int argc, const char **argv) {
   command_info_t command_info = {};
   status_t status = parse_command(argc, argv, &command_info);
+  if (status != ST_OK) {
+    write_error(status);
+    exit(1);
+  }
 
   switch (command_info.command_type) {
   case CMD_NEW:

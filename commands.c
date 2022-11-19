@@ -28,13 +28,14 @@ bool cmd_is_1_arg(command_type_t command) {
   }
 }
 
-status_t cmd_new(const char *scratchpad_name) {
-  return ST_OK;
-}
+status_t cmd_new(const char *scratchpad_name) { return ST_OK; }
 status_t cmd_show(const char *scratchpad_name) { return ST_OK; }
 status_t cmd_remove(const char *scratchpad_name) { return ST_OK; }
 status_t cmd_edit(const char *scratchpad_name) { return ST_OK; }
 
 status_t cmd_list(void) { return ST_OK; }
 
-status_t cmd_help(void) { return write_help_message_to_stdout(); }
+status_t cmd_help(void) {
+  io_write_help_message();
+  return ST_OK;
+}

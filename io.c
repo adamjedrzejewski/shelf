@@ -9,7 +9,7 @@
 
 static const char *STORAGE_PATH = "/tmp/shelf/";
 
-status_t continious_write_to_scratchpad(const char *name) {
+status_t io_continious_write_from_to(const char *name) {
   FILE *file;
   file = fopen("test.o", "w");
 
@@ -23,15 +23,38 @@ status_t continious_write_to_scratchpad(const char *name) {
   return ST_OK;
 }
 
-status_t write_help_message_to_stdout(void) { return ST_OK; }
+void io_write_help_message(void) {}
 
-status_t create_stash() {
+void io_write_error(status_t error) {
+  const char *error_message;
+  switch (error) {
+  case ST_NO_COMMAND_SPECIFIED:
+    error_message = ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
+    break;
+  case ST_MISSING_SCRATCHPAD_NAME:
+    error_message = ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
+    break;
+  case ST_CMD_INVALID:
+    error_message = ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE;
+    break;
+  case ST_FAILED_TO_READ_STASH:
+    error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
+    break;
+  default:
+    return;
+  }
+
+  fputs(error_message, stderr);
+  fputs("\n", stderr);
+}
+
+status_t io_create_stash_if_nonexistent(void) {
   int err = mkdir(STORAGE_PATH, 0777);
 
   return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
-status_t cmd_remove_file(const char *name) { return ST_OK; }
+status_t io_remove_file(const char *name) { return ST_OK; }
 
 status_t list_scratchpad_files() {
   DIR *d;

@@ -11,6 +11,8 @@ typedef enum status {
 
   ST_FAILED_TO_READ_STASH, // missing/empty/unable to read storage
   ST_FAILED_TO_CREATE_STASH,
+
+  ST_FAILED_TO_READ_ENVVAR
 } status_t;
 
 static const char *ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE =

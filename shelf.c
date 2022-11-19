@@ -61,7 +61,6 @@ status_t parse_command(int argc, const char **argv,
   if (argc == 2) {
     return ST_MISSING_SCRATCHPAD_NAME;
   }
-  printf("scratch that");
   command_info->scratchpad_name = argv[2];
 
   return ST_OK;

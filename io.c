@@ -127,6 +127,7 @@ void io_write_error(status_t error) {
     }
   }
 
+  // unregistered error, needs to bee added to error_message_mappings
   return;
 
 SHOW_ERORR:

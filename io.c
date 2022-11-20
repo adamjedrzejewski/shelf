@@ -8,7 +8,28 @@
 
 #define BUFFER_SIZE 256
 
+#define foreach(item, array)                                                   \
+  for (int keep = 1, count = 0, size = sizeof(array) / sizeof *(array);        \
+       keep && count != size; keep = !keep, count++)                           \
+    for (item = (array) + count; keep; keep = !keep)
+
 static const char *STORAGE_PATH = "/tmp/shelf/";
+
+typedef struct {
+  status_t status;
+  const char **erorr_message;
+} error_message_mapping_t;
+
+error_message_mapping_t error_message_mappings[] = {
+    {ST_NO_COMMAND_SPECIFIED, &ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE},
+    {ST_MISSING_SCRATCHPAD_NAME, &ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE},
+    {ST_CMD_INVALID, &ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE},
+    {ST_FAILED_TO_READ_STASH, &ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE},
+    {ST_FAILED_TO_CREATE_STASH, &ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE},
+    {ST_SCRATCHPAD_DOESNT_EXIST, &ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE},
+    {ST_FAILED_TO_REMOVE_SCRATCHPAD,
+     &ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE},
+    {ST_FAILED_TO_READ_ENVVAR, &ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE}};
 
 static status_t _create_scratchpad_path(const char *filename, char *buffer) {
   // TODO: handle error
@@ -98,35 +119,17 @@ void io_write_help_message(void) { puts("help"); }
 void io_write_error(status_t error) {
   const char *error_message;
 
-  switch (error) {
-  case ST_NO_COMMAND_SPECIFIED:
-    error_message = ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE;
-    break;
-  case ST_MISSING_SCRATCHPAD_NAME:
-    error_message = ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE;
-    break;
-  case ST_CMD_INVALID:
-    error_message = ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE;
-    break;
-  case ST_FAILED_TO_READ_STASH:
-    error_message = ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE;
-    break;
-  case ST_FAILED_TO_CREATE_STASH:
-    error_message = ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE;
-    break;
-  case ST_SCRATCHPAD_DOESNT_EXIST:
-    error_message = ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE;
-    break;
-  case ST_FAILED_TO_REMOVE_SCRATCHPAD:
-    error_message = ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE;
-    break;
-  case ST_FAILED_TO_READ_ENVVAR:
-    error_message = ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE;
-    break;
-  default:
-    return;
+  foreach (error_message_mapping_t *mapping, error_message_mappings) {
+    // you can't break out of this macro look with break;
+    if (mapping->status == error) {
+      error_message = *mapping->erorr_message;
+      goto SHOW_ERORR;
+    }
   }
 
+  return;
+
+SHOW_ERORR:
   fputs(error_message, stderr);
   fputs("\n", stderr);
 }

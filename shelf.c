@@ -18,12 +18,9 @@ typedef const struct {
 } defined_command_t;
 
 defined_command_t defined_commands[] = {
-    {.command_type = CMD_HELP, .command_name = &CMD_HELP_NAME},
-    {.command_type = CMD_LIST, .command_name = &CMD_LIST_NAME},
-    {.command_type = CMD_NEW, .command_name = &CMD_NEW_NAME},
-    {.command_type = CMD_SHOW, .command_name = &CMD_SHOW_NAME},
-    {.command_type = CMD_REMOVE, .command_name = &CMD_REMOVE_NAME},
-    {.command_type = CMD_EDIT, .command_name = &CMD_EDIT_NAME},
+    {CMD_HELP, &CMD_HELP_NAME},     {CMD_LIST, &CMD_LIST_NAME},
+    {CMD_NEW, &CMD_NEW_NAME},       {CMD_SHOW, &CMD_SHOW_NAME},
+    {CMD_REMOVE, &CMD_REMOVE_NAME}, {CMD_EDIT, &CMD_EDIT_NAME},
 };
 
 status_t parse_command(int argc, const char **argv,

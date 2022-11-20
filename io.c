@@ -120,7 +120,7 @@ void io_write_error(status_t error) {
   const char *error_message;
 
   foreach (error_message_mapping_t *mapping, error_message_mappings) {
-    // you can't break out of this macro look with break;
+    // you can't break out of this macro loop with break
     if (mapping->status == error) {
       error_message = *mapping->erorr_message;
       goto SHOW_ERORR;

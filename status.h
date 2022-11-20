@@ -32,5 +32,7 @@ static const char *ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE =
     "Scratchpad doesn't exist.";
 static const char *ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE =
     "Failed to remove scratchpad.";
+static const char *ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE =
+    "Failed to read environment variable.";
 
 #endif // STATUS_H

@@ -57,13 +57,14 @@ status_t cmd_remove(const char *scratchpad_name) {
 status_t cmd_edit(const char *scratchpad_name) {
   char *editor;
 
-  status_t status = io_getenv(EDITOR_ENV_VAR_NAME, editor);
+  status_t status = io_getenv(EDITOR_ENV_VAR_NAME, &editor);
 
   // if failed to read EDITOR value, let's try with visual
   if (status == ST_FAILED_TO_READ_ENVVAR) {
-    status = io_getenv(VISUAL_ENV_VAR_NAME, editor);
+    status = io_getenv(VISUAL_ENV_VAR_NAME, &editor);
   }
   if (status != ST_OK) {
+    // TODO change to status failed to run editor
     return status;
   }
 

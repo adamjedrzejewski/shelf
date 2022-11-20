@@ -120,6 +120,9 @@ void io_write_error(status_t error) {
   case ST_FAILED_TO_REMOVE_SCRATCHPAD:
     error_message = ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE;
     break;
+  case ST_FAILED_TO_READ_ENVVAR:
+    error_message = ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE;
+    break;
   default:
     return;
   }
@@ -160,18 +163,20 @@ status_t io_list_files_in_stash(void) {
   return ST_OK;
 }
 
-status_t io_getenv(const char *var_name, char *ret_val) {
-  ret_val = getenv(var_name);
+status_t io_getenv(const char *var_name, char **ret_val) {
+  char *editor = getenv(var_name);
 
-  if (ret_val == NULL) {
+  if (editor == NULL) {
     return ST_FAILED_TO_READ_ENVVAR;
   }
+
+  *ret_val = editor;
 
   return ST_OK;
 }
 
 status_t io_run_editor_on_file(const char *editor,
                                const char *scratchpad_name) {
-  puts("edit");
+  printf("edit with: %s\n", editor);
   return ST_OK;
 }

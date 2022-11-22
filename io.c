@@ -181,6 +181,18 @@ status_t io_getenv(const char *var_name, char **ret_val) {
 
 status_t io_run_editor_on_file(const char *editor,
                                const char *scratchpad_name) {
-  printf("edit with: %s\n", editor);
+  char path[BUFFER_SIZE] = {};
+  char command[BUFFER_SIZE] = {};
+  status_t status;
+
+  status = _create_scratchpad_path(scratchpad_name, path);
+  if (status != ST_OK) {
+    return status;
+  }
+
+  snprintf(command, BUFFER_SIZE, "%s %s", editor, path);
+
+  system(command); 
+
   return ST_OK;
 }

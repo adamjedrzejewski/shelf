@@ -40,5 +40,4 @@ make
 
 - error handling
 - refactoring
-- edit
 - multiuser support

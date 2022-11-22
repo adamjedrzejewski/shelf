@@ -114,7 +114,15 @@ status_t io_remove_file(const char *filename) {
   return ST_OK;
 }
 
-void io_write_help_message(void) { puts("help"); }
+void io_write_help_message(void) {
+  puts("commands:");
+  puts("new - create new scratchpad");
+  puts("show - show scratchpad contents");
+  puts("remove - remove scratchpad");
+  puts("list - list scratchpads");
+  puts("edit - edit scratchpad");
+  puts("help - show help");
+}
 
 void io_write_error(status_t error) {
   const char *error_message;
@@ -192,7 +200,7 @@ status_t io_run_editor_on_file(const char *editor,
 
   snprintf(command, BUFFER_SIZE, "%s %s", editor, path);
 
-  system(command); 
+  system(command);
 
   return ST_OK;
 }

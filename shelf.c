@@ -64,7 +64,7 @@ status_t parse_command(int argc, const char **argv,
 }
 
 int main(int argc, const char **argv) {
-  command_info_t command_info = {};
+  command_info_t command_info = { 0 };
   status_t status = parse_command(argc, argv, &command_info);
   if (status != ST_OK) {
     io_write_error(status);

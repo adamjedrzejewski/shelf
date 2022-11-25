@@ -48,8 +48,8 @@ static bool _file_exists(const char *path) {
 status_t io_write_from_stdin_to_file(const char *filename) {
   FILE *file;
   status_t status;
-  char path[BUFFER_SIZE] = {};
-  char buffer[BUFFER_SIZE] = {};
+  char path[BUFFER_SIZE] = { 0 };
+  char buffer[BUFFER_SIZE] = { 0 };
 
   status = _create_scratchpad_path(filename, path);
   if (status != ST_OK) {
@@ -71,8 +71,8 @@ status_t io_write_from_stdin_to_file(const char *filename) {
 status_t io_write_from_file_to_stdout(const char *filename) {
   FILE *file;
   status_t status;
-  char path[BUFFER_SIZE] = {};
-  char buffer[BUFFER_SIZE] = {};
+  char path[BUFFER_SIZE] = { 0 };
+  char buffer[BUFFER_SIZE] = { 0 };
 
   status = _create_scratchpad_path(filename, path);
   if (status != ST_OK) {
@@ -94,9 +94,8 @@ status_t io_write_from_file_to_stdout(const char *filename) {
 }
 
 status_t io_remove_file(const char *filename) {
-  FILE *file;
   status_t status;
-  char path[BUFFER_SIZE] = {};
+  char path[BUFFER_SIZE] = { 0 };
 
   status = _create_scratchpad_path(filename, path);
   if (status != ST_OK) {
@@ -144,7 +143,7 @@ SHOW_ERORR:
 }
 
 status_t io_create_stash_if_nonexistent(void) {
-  struct stat st = {};
+  struct stat st = { 0 };
 
   if (stat(STORAGE_PATH, &st) == 0) {
     return ST_OK;
@@ -189,8 +188,8 @@ status_t io_getenv(const char *var_name, char **ret_val) {
 
 status_t io_run_editor_on_file(const char *editor,
                                const char *scratchpad_name) {
-  char path[BUFFER_SIZE] = {};
-  char command[BUFFER_SIZE] = {};
+  char path[BUFFER_SIZE] = { 0 };
+  char command[BUFFER_SIZE] = { 0 };
   status_t status;
 
   status = _create_scratchpad_path(scratchpad_name, path);

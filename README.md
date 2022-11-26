@@ -41,3 +41,4 @@ make
 - error handling
 - refactoring
 - multiuser support
+- shelf remove should be able to remove multiple scratchpads (with globing or listing multiple at a time)

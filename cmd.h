@@ -35,6 +35,6 @@ enum status cmd_show(const char *scratchpad_name);
 enum status cmd_remove(const char *scratchpad_name);
 enum status cmd_edit(const char *scratchpad_name);
 enum status cmd_list(void);
-enum status cmd_help(void);
+void cmd_help(void);
 
 #endif // COMMANDS_H

@@ -28,8 +28,12 @@ enum status parse_command(int argc, const char **argv,
   command_info->command_type = CMD_INVALID;
   command_info->scratchpad_name = NULL;
 
+  // if no command specified show help
   if (argc == 1) {
-    return ST_NO_COMMAND_SPECIFIED;
+    command_info->command_type = CMD_HELP;
+    command_info->scratchpad_name = NULL;
+
+    return ST_OK;
   }
 
   // match command
@@ -64,7 +68,7 @@ enum status parse_command(int argc, const char **argv,
 }
 
 int main(int argc, const char **argv) {
-  struct command_info command_info = { 0 };
+  struct command_info command_info;
   enum status status = parse_command(argc, argv, &command_info);
   if (status != ST_OK) {
     io_write_error(status);
@@ -88,20 +92,19 @@ int main(int argc, const char **argv) {
     status = cmd_list();
     break;
   case CMD_HELP:
-    status = cmd_help();
+    cmd_help();
+    status = ST_OK;
+    break;
 
   case CMD_INVALID:
   default:
     break;
   }
 
-  // printf("%d\n", status);
-
   if (status != ST_OK) {
     io_write_error(status);
     exit(1);
   }
 
-  // printf("%d\n", command_info.command_type);
   return 0;
 }

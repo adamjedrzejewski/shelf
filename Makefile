@@ -6,7 +6,7 @@ CFLAGS += -Wall -Wextra -Wpedantic \
 CFLAGS += -O2
 CFLAGS += -std=c11  
 
-CC = gcc
+CC = cc
 
 shelf: shelf.o cmd.o io.o
 	$(CC) -o shelf shelf.o cmd.o io.o

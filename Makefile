@@ -6,18 +6,19 @@ CFLAGS += -Wall -Wextra -Wpedantic \
 CFLAGS += -O2
 CFLAGS += -std=c11  
 
+CC = gcc
 
 shelf: shelf.o cmd.o io.o
-	cc -o shelf shelf.o cmd.o io.o
+	$(CC) -o shelf shelf.o cmd.o io.o
 
 shelf.o:
-	cc $(CFLAGS) -c shelf.c
+	$(CC) $(CFLAGS) -c shelf.c
 
 cmd.o:
-	cc $(CFLAGS) -c cmd.c
+	$(CC) $(CFLAGS) -c cmd.c
 
 io.o:
-	cc $(CFLAGS) -c io.c
+	$(CC) $(CFLAGS) -c io.c
 
 clean:
 	rm -f shelf *.o *.h.gch

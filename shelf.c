@@ -24,14 +24,13 @@ struct defined_command defined_commands[] = {
 };
 
 enum status parse_command(int argc, const char **argv,
-                       struct command_info *command_info) {
+                          struct command_info *command_info) {
   command_info->command_type = CMD_INVALID;
   command_info->scratchpad_name = NULL;
 
   // if no command specified show help
   if (argc == 1) {
     command_info->command_type = CMD_HELP;
-    command_info->scratchpad_name = NULL;
 
     return ST_OK;
   }
@@ -60,7 +59,7 @@ enum status parse_command(int argc, const char **argv,
 
   // commands with argument
   if (argc == 2) {
-    return ST_MISSING_SCRATCHPAD_NAME;
+    return ST_MISSING_ARGUMENT;
   }
   command_info->scratchpad_name = argv[2];
 

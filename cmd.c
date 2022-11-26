@@ -43,16 +43,16 @@ enum status cmd_remove(const char *scratchpad_name) {
 }
 enum status cmd_edit(const char *scratchpad_name) {
   char *editor;
+  enum status status;
 
-  enum status status = io_getenv(EDITOR_ENV_VAR_NAME, &editor);
+  editor = getenv(EDITOR_ENV_VAR_NAME);
 
   // if failed to read EDITOR value, let's try with VISUAL
-  if (status == ST_FAILED_TO_READ_ENVVAR) {
-    status = io_getenv(VISUAL_ENV_VAR_NAME, &editor);
+  if (editor == NULL) {
+    editor = getenv(VISUAL_ENV_VAR_NAME);
   }
-  if (status != ST_OK) {
-    // TODO change to status failed to run editor
-    return status;
+  if (editor == NULL) {
+    return ST_FAILED_TO_READ_ENVVAR;
   }
 
   status = io_run_editor_on_file(editor, scratchpad_name);

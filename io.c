@@ -22,16 +22,18 @@ struct error_message_mapping {
 
 struct error_message_mapping error_message_mappings[] = {
     {ST_NO_COMMAND_SPECIFIED, &ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE},
-    {ST_MISSING_SCRATCHPAD_NAME, &ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE},
+    {ST_MISSING_ARGUMENT, &ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE},
     {ST_CMD_INVALID, &ST_CMD_INVALID_STATUS_NAME_ERROR_MESSAGE},
     {ST_FAILED_TO_READ_STASH, &ST_FAILED_TO_READ_STASH_NAME_ERROR_MESSAGE},
     {ST_FAILED_TO_CREATE_STASH, &ST_FAILED_TO_CREATE_STASH_ERROR_MESSAGE},
     {ST_SCRATCHPAD_DOESNT_EXIST, &ST_SCRATCHPAD_DOESNT_EXIST_ERROR_MESSAGE},
     {ST_FAILED_TO_REMOVE_SCRATCHPAD,
      &ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE},
-    {ST_FAILED_TO_READ_ENVVAR, &ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE}};
+    {ST_FAILED_TO_READ_ENVVAR, &ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE},
+    {ST_FAILED_TO_RUN_EDITOR, &ST_FAILED_TO_RUN_EDITOR_ERROR_MESSAGE}};
 
-static enum status __create_scratchpad_path(const char *filename, char *buffer) {
+static enum status __create_scratchpad_path(const char *filename,
+                                            char *buffer) {
   // TODO: handle error
   snprintf(buffer, BUFFER_SIZE, "%s%s", STORAGE_PATH, filename);
 
@@ -174,24 +176,12 @@ enum status io_list_files_in_stash(void) {
   return ST_OK;
 }
 
-// TODO: error handling, what if ret_val is too big to be put in a buffer
-enum status io_getenv(const char *var_name, char **ret_val) {
-  char *editor = getenv(var_name);
-
-  if (editor == NULL) {
-    return ST_FAILED_TO_READ_ENVVAR;
-  }
-
-  *ret_val = editor;
-
-  return ST_OK;
-}
-
 enum status io_run_editor_on_file(const char *editor,
-                               const char *scratchpad_name) {
+                                  const char *scratchpad_name) {
   char path[BUFFER_SIZE];
   char command[BUFFER_SIZE];
   enum status status;
+  int ret;
 
   status = __create_scratchpad_path(scratchpad_name, path);
   if (status != ST_OK) {
@@ -200,7 +190,10 @@ enum status io_run_editor_on_file(const char *editor,
 
   snprintf(command, BUFFER_SIZE, "%s %s", editor, path);
 
-  system(command);
+  ret = system(command);
+  if (ret != 0) {
+    return ST_FAILED_TO_RUN_EDITOR;
+  }
 
   return ST_OK;
 }

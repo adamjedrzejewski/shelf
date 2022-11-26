@@ -23,7 +23,7 @@ struct defined_command defined_commands[] = {
     {CMD_REMOVE, &CMD_REMOVE_NAME}, {CMD_EDIT, &CMD_EDIT_NAME},
 };
 
-enum status parse_command(int argc, const char **argv,
+enum status_type parse_command(int argc, const char **argv,
                           struct command_info *command_info) {
   command_info->command_type = CMD_INVALID;
   command_info->scratchpad_name = NULL;
@@ -68,7 +68,7 @@ enum status parse_command(int argc, const char **argv,
 
 int main(int argc, const char **argv) {
   struct command_info command_info;
-  enum status status = parse_command(argc, argv, &command_info);
+  enum status_type status = parse_command(argc, argv, &command_info);
   if (status != ST_OK) {
     io_write_error(status);
     exit(1);

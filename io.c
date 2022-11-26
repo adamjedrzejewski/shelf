@@ -16,7 +16,7 @@
 static const char *STORAGE_PATH = "/tmp/shelf/";
 
 struct error_message_mapping {
-  enum status status;
+  enum status_type status;
   const char **erorr_message;
 };
 
@@ -32,7 +32,7 @@ struct error_message_mapping error_message_mappings[] = {
     {ST_FAILED_TO_READ_ENVVAR, &ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE},
     {ST_FAILED_TO_RUN_EDITOR, &ST_FAILED_TO_RUN_EDITOR_ERROR_MESSAGE}};
 
-static enum status __create_scratchpad_path(const char *filename,
+static enum status_type __create_scratchpad_path(const char *filename,
                                             char *buffer) {
   // TODO: handle error
   snprintf(buffer, BUFFER_SIZE, "%s%s", STORAGE_PATH, filename);
@@ -47,9 +47,9 @@ static bool _file_exists(const char *path) {
   return stat(path, &st) == 0;
 }
 
-enum status io_write_from_stdin_to_file(const char *filename) {
+enum status_type io_write_from_stdin_to_file(const char *filename) {
   FILE *file;
-  enum status status;
+  enum status_type status;
   char path[BUFFER_SIZE];
   char buffer[BUFFER_SIZE];
 
@@ -70,9 +70,9 @@ enum status io_write_from_stdin_to_file(const char *filename) {
   return ST_OK;
 }
 
-enum status io_write_from_file_to_stdout(const char *filename) {
+enum status_type io_write_from_file_to_stdout(const char *filename) {
   FILE *file;
-  enum status status;
+  enum status_type status;
   char path[BUFFER_SIZE];
   char buffer[BUFFER_SIZE];
 
@@ -95,8 +95,8 @@ enum status io_write_from_file_to_stdout(const char *filename) {
   return ST_OK;
 }
 
-enum status io_remove_file(const char *filename) {
-  enum status status;
+enum status_type io_remove_file(const char *filename) {
+  enum status_type status;
   char path[BUFFER_SIZE];
 
   status = __create_scratchpad_path(filename, path);
@@ -125,7 +125,7 @@ void io_write_help_message(void) {
   puts("help - show help");
 }
 
-void io_write_error(enum status error) {
+void io_write_error(enum status_type error) {
   const char *error_message;
 
   foreach (struct error_message_mapping *mapping, error_message_mappings) {
@@ -142,7 +142,7 @@ SHOW_ERORR:
   fputs("\n", stderr);
 }
 
-enum status io_create_stash_if_nonexistent(void) {
+enum status_type io_create_stash_if_nonexistent(void) {
   struct stat st;
 
   if (stat(STORAGE_PATH, &st) == 0) {
@@ -156,7 +156,7 @@ enum status io_create_stash_if_nonexistent(void) {
   return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
-enum status io_list_files_in_stash(void) {
+enum status_type io_list_files_in_stash(void) {
   // TODO: handle errors
   DIR *d;
   struct dirent *dir;
@@ -176,11 +176,11 @@ enum status io_list_files_in_stash(void) {
   return ST_OK;
 }
 
-enum status io_run_editor_on_file(const char *editor,
+enum status_type io_run_editor_on_file(const char *editor,
                                   const char *scratchpad_name) {
   char path[BUFFER_SIZE];
   char command[BUFFER_SIZE];
-  enum status status;
+  enum status_type status;
   int ret;
 
   status = __create_scratchpad_path(scratchpad_name, path);

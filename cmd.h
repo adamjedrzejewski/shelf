@@ -30,11 +30,11 @@ struct command_info {
 bool cmd_is_0_arg(enum command_type command);
 bool cmd_is_1_arg(enum command_type command);
 
-enum status cmd_new(const char *scratchpad_name);
-enum status cmd_show(const char *scratchpad_name);
-enum status cmd_remove(const char *scratchpad_name);
-enum status cmd_edit(const char *scratchpad_name);
-enum status cmd_list(void);
+enum status_type cmd_new(const char *scratchpad_name);
+enum status_type cmd_show(const char *scratchpad_name);
+enum status_type cmd_remove(const char *scratchpad_name);
+enum status_type cmd_edit(const char *scratchpad_name);
+enum status_type cmd_list(void);
 void cmd_help(void);
 
 #endif // COMMANDS_H

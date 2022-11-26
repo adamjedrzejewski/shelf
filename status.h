@@ -1,7 +1,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-enum status {
+enum status_type {
   ST_OK,
 
   // cmd line errors
@@ -21,6 +21,11 @@ enum status {
   ST_FAILED_TO_RUN_EDITOR
 };
 
+struct status {
+    enum status_type status;
+    char **info;
+};
+
 static const char *ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE =
     "Please specify a command.";
 static const char *ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE =
@@ -38,6 +43,6 @@ static const char *ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE =
 static const char *ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE =
     "Failed to read environment variable.";
 static const char *ST_FAILED_TO_RUN_EDITOR_ERROR_MESSAGE =
-    "Failed to run editor";
+    "Failed to run editor.";
 
 #endif // STATUS_H

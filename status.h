@@ -1,7 +1,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-typedef enum status {
+enum status {
   ST_OK,
 
   // cmd line errors
@@ -16,7 +16,7 @@ typedef enum status {
   ST_FAILED_TO_REMOVE_SCRATCHPAD,
 
   ST_FAILED_TO_READ_ENVVAR
-} status_t;
+};
 
 static const char *ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE =
     "Please specify a command.";

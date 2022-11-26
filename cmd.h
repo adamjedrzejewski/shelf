@@ -12,7 +12,7 @@ static const char *CMD_EDIT_NAME = "edit";
 static const char *CMD_LIST_NAME = "list";
 static const char *CMD_HELP_NAME = "help";
 
-typedef enum command_type {
+enum command_type {
   CMD_INVALID,
   CMD_NEW,
   CMD_SHOW,
@@ -20,21 +20,21 @@ typedef enum command_type {
   CMD_EDIT,
   CMD_LIST,
   CMD_HELP
-} command_type_t;
+};
 
-typedef struct command_info {
-  command_type_t command_type;
+struct command_info {
+  enum command_type command_type;
   const char *scratchpad_name;
-} command_info_t;
+};
 
-bool cmd_is_0_arg(command_type_t command);
-bool cmd_is_1_arg(command_type_t command);
+bool cmd_is_0_arg(enum command_type command);
+bool cmd_is_1_arg(enum command_type command);
 
-status_t cmd_new(const char *scratchpad_name);
-status_t cmd_show(const char *scratchpad_name);
-status_t cmd_remove(const char *scratchpad_name);
-status_t cmd_edit(const char *scratchpad_name);
-status_t cmd_list(void);
-status_t cmd_help(void);
+enum status cmd_new(const char *scratchpad_name);
+enum status cmd_show(const char *scratchpad_name);
+enum status cmd_remove(const char *scratchpad_name);
+enum status cmd_edit(const char *scratchpad_name);
+enum status cmd_list(void);
+enum status cmd_help(void);
 
 #endif // COMMANDS_H

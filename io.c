@@ -15,12 +15,12 @@
 
 static const char *STORAGE_PATH = "/tmp/shelf/";
 
-typedef struct {
-  status_t status;
+struct error_message_mapping {
+  enum status status;
   const char **erorr_message;
-} error_message_mapping_t;
+};
 
-error_message_mapping_t error_message_mappings[] = {
+struct error_message_mapping error_message_mappings[] = {
     {ST_NO_COMMAND_SPECIFIED, &ST_NO_COMMAND_SPECIFIED_ERROR_MESSAGE},
     {ST_MISSING_SCRATCHPAD_NAME, &ST_MISSING_SCRATCHPAD_NAME_ERROR_MESSAGE},
     {ST_CMD_INVALID, &ST_CMD_INVALIDS_STATUS_NAME_ERROR_MESSAGE},
@@ -31,7 +31,7 @@ error_message_mapping_t error_message_mappings[] = {
      &ST_FAILED_TO_REMOVE_SCRATCHPAD_ERROR_MESSAGE},
     {ST_FAILED_TO_READ_ENVVAR, &ST_FAILED_TO_READ_ENVVAR_ERROR_MESSAGE}};
 
-static status_t _create_scratchpad_path(const char *filename, char *buffer) {
+static enum status _create_scratchpad_path(const char *filename, char *buffer) {
   // TODO: handle error
   snprintf(buffer, BUFFER_SIZE, "%s%s", STORAGE_PATH, filename);
 
@@ -45,9 +45,9 @@ static bool _file_exists(const char *path) {
   return stat(path, &st) == 0;
 }
 
-status_t io_write_from_stdin_to_file(const char *filename) {
+enum status io_write_from_stdin_to_file(const char *filename) {
   FILE *file;
-  status_t status;
+  enum status status;
   char path[BUFFER_SIZE] = { 0 };
   char buffer[BUFFER_SIZE] = { 0 };
 
@@ -68,9 +68,9 @@ status_t io_write_from_stdin_to_file(const char *filename) {
   return ST_OK;
 }
 
-status_t io_write_from_file_to_stdout(const char *filename) {
+enum status io_write_from_file_to_stdout(const char *filename) {
   FILE *file;
-  status_t status;
+  enum status status;
   char path[BUFFER_SIZE] = { 0 };
   char buffer[BUFFER_SIZE] = { 0 };
 
@@ -93,8 +93,8 @@ status_t io_write_from_file_to_stdout(const char *filename) {
   return ST_OK;
 }
 
-status_t io_remove_file(const char *filename) {
-  status_t status;
+enum status io_remove_file(const char *filename) {
+  enum status status;
   char path[BUFFER_SIZE] = { 0 };
 
   status = _create_scratchpad_path(filename, path);
@@ -123,10 +123,10 @@ void io_write_help_message(void) {
   puts("help - show help");
 }
 
-void io_write_error(status_t error) {
+void io_write_error(enum status error) {
   const char *error_message;
 
-  foreach (error_message_mapping_t *mapping, error_message_mappings) {
+  foreach (struct error_message_mapping *mapping, error_message_mappings) {
     // you can't break out of this macro loop with break
     if (mapping->status == error) {
       error_message = *mapping->erorr_message;
@@ -142,7 +142,7 @@ SHOW_ERORR:
   fputs("\n", stderr);
 }
 
-status_t io_create_stash_if_nonexistent(void) {
+enum status io_create_stash_if_nonexistent(void) {
   struct stat st = { 0 };
 
   if (stat(STORAGE_PATH, &st) == 0) {
@@ -154,7 +154,7 @@ status_t io_create_stash_if_nonexistent(void) {
   return err == 0 ? ST_OK : ST_FAILED_TO_CREATE_STASH;
 }
 
-status_t io_list_files_in_stash(void) {
+enum status io_list_files_in_stash(void) {
   // TODO: handle errors
   DIR *d;
   struct dirent *dir;
@@ -174,7 +174,7 @@ status_t io_list_files_in_stash(void) {
   return ST_OK;
 }
 
-status_t io_getenv(const char *var_name, char **ret_val) {
+enum status io_getenv(const char *var_name, char **ret_val) {
   char *editor = getenv(var_name);
 
   if (editor == NULL) {
@@ -186,11 +186,11 @@ status_t io_getenv(const char *var_name, char **ret_val) {
   return ST_OK;
 }
 
-status_t io_run_editor_on_file(const char *editor,
+enum status io_run_editor_on_file(const char *editor,
                                const char *scratchpad_name) {
   char path[BUFFER_SIZE] = { 0 };
   char command[BUFFER_SIZE] = { 0 };
-  status_t status;
+  enum status status;
 
   status = _create_scratchpad_path(scratchpad_name, path);
   if (status != ST_OK) {

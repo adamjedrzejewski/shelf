@@ -4,7 +4,7 @@ CFLAGS += -Wall -Wextra -Wpedantic \
           -Wredundant-decls -Wnested-externs -Wmissing-include-dirs
 
 CFLAGS += -O2
-CFLAGS += -std=c11  
+CFLAGS += -std=c11
 
 CC = cc
 
